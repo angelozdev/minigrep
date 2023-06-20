@@ -19,11 +19,12 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
 fn search<'a>(query: &str, contents: &'a str) -> Vec<(usize, String)> {
     let mut results: HashMap<usize, String> = HashMap::new();
-    for (number, line) in contents.lines().enumerate() {
+
+    contents.lines().enumerate().for_each(|(number, line)| {
         if line.contains(query) {
             results.insert(number + 1, line.to_string());
         }
-    }
+    });
 
     let mut results = results.into_iter().collect::<Vec<_>>();
     results.sort_by(|a, b| a.0.cmp(&b.0));
@@ -33,11 +34,12 @@ fn search<'a>(query: &str, contents: &'a str) -> Vec<(usize, String)> {
 
 fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<(usize, String)> {
     let mut results: HashMap<usize, String> = HashMap::new();
-    for (number, line) in contents.lines().enumerate() {
-        if line.to_lowercase().contains(query.to_lowercase().as_str()) {
+
+    contents.lines().enumerate().for_each(|(number, line)| {
+        if line.to_lowercase().contains(query) {
             results.insert(number + 1, line.to_string());
         }
-    }
+    });
 
     let mut results = results.into_iter().collect::<Vec<_>>();
     results.sort_by(|a, b| a.0.cmp(&b.0));
